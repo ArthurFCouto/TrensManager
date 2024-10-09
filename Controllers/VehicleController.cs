@@ -35,6 +35,13 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
+        [HttpGet("code/{code}")]
+        public async Task<ActionResult<VehicleModel>> GetByCode(string code)
+        {
+            VehicleModel vehicle = await _vehicleRepository.GetByCode(code);
+            return Ok(vehicle);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<VehicleModel>> Update([FromBody] VehicleModel vehicleModel, int id)
         {
