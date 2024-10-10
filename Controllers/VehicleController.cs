@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TrensManager.Models;
 using TrensManager.Repositories.Interface;
 
@@ -14,6 +15,7 @@ namespace TrensManager.Controllers
             _vehicleRepository = vehicleRepository;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<VehicleModel>> Add([FromBody] VehicleModel vehicleModel)
         {
@@ -21,6 +23,7 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<VehicleModel>>> GetAll()
         {
@@ -28,6 +31,7 @@ namespace TrensManager.Controllers
             return Ok(vehicles);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleModel>> GetById(int id)
         {
@@ -35,6 +39,7 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
+        [Authorize]
         [HttpGet("code/{code}")]
         public async Task<ActionResult<VehicleModel>> GetByCode(string code)
         {
@@ -42,6 +47,7 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<VehicleModel>> Update([FromBody] VehicleModel vehicleModel, int id)
         {
@@ -50,6 +56,7 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

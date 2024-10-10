@@ -1,5 +1,0 @@
-@TrensManager_HostAddress = https://localhost:1433
-
-GET {{TrensManager_HostAddress}}/api/vehicle
-
-###

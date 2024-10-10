@@ -13,10 +13,12 @@ namespace TrensManager.Data
     {
         public TrainSystemDBContext(DbContextOptions<TrainSystemDBContext> options) : base(options) { }
         public DbSet<TrainModel> Train { get; set; }
+        public DbSet<UserModel> User { get; set; }
         public DbSet<VehicleModel> Vehicle { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new TrainMap());
+            modelBuilder.ApplyConfiguration(new  UserMap());
             modelBuilder.ApplyConfiguration(new VehicleMap());
             base.OnModelCreating(modelBuilder);
         }

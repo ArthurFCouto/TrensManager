@@ -6,7 +6,7 @@ namespace TrensManager.Models
     public class VehicleModel
     {
         public int Id { get; set; }
-        public VehicleType Type { get; set; }
+        public required VehicleType Type { get; set; }
         public required string Code { get; set; }
         public int? TrainId { get; set; }
         [JsonIgnore]
