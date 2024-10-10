@@ -40,11 +40,11 @@ namespace TrensManager.Controllers
             return Ok(user);
         }
 
-        [HttpPost("token")]
-        public async Task<ActionResult<string>> GetToken([FromBody] UserModel userModel)
+        [HttpGet("token")]
+        public async Task<ActionResult<string>> GetToken([FromQuery] string userName, [FromQuery] string userPassword)
         {
-            UserModel user = await _userRepository.GetByUserName(userModel.UserName);
-            if(user.UserPassword == userModel.UserPassword)
+            UserModel user = await _userRepository.GetByUserName(userName);
+            if(user.UserPassword == userPassword)
                 return Ok(ServiceToken.GenerateToken(user));
             return BadRequest();
         }
