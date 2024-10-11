@@ -6,7 +6,8 @@ using TrensManager.Services;
 
 namespace TrensManager.Controllers
 {
-    }
+    // Anotação que informa que a classe necessita do token para ser acesada
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -17,14 +18,15 @@ namespace TrensManager.Controllers
             _userRepository = userRepository;
         }
 
+        // Anotação que informa que esse método não necessita de token para ser acessado, apesar de estar dentro de uma classe que necessita
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<UserModel>> Add([FromBody] UserModel userModel)
         {
             UserModel user = await _userRepository.Add(userModel);
             return Ok(user);
         }
-
-        [Authorize]
+        
         [HttpGet]
         public async Task<ActionResult<List<UserModel>>> GetAll()
         {
@@ -32,14 +34,14 @@ namespace TrensManager.Controllers
             return Ok(users);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetById(int id)
+        public async Task<ActionResult<UserModel>> GetById([FromRoute] int id)
         {
             UserModel user = await _userRepository.GetById(id);
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpGet("token")]
         public async Task<ActionResult<string>> GetToken([FromQuery] string userName, [FromQuery] string userPassword)
         {
@@ -49,18 +51,16 @@ namespace TrensManager.Controllers
             return BadRequest();
         }
 
-        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
+        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, [FromRoute] int id)
         {
             userModel.Id = id;
             UserModel user = await _userRepository.Update(userModel, id);
             return Ok(user);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             bool response = await _userRepository.Delete(id);
             return Ok(response);

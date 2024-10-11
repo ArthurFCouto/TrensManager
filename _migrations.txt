@@ -1,6 +1,0 @@
-CRIAR A MIGRATION => Acessar o Package Maneger Console
-Add-Migration InitialDB -Context TrainSystemDBContext
-(Onde "InitialDB" será o nome da migration e o "TrainSystemDBContext" deve ser o nome do contexto)
-
-EXECUTAR A MIGRATION => Acessar o Package Maneger Console
-Update-Database -Context TrainSystemDBContext

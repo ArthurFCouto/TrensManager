@@ -71,6 +71,7 @@ namespace TrensManager
                 .AddDbContext<TrainSystemDBContext>(
                     (options) => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
                 );
+
             builder.Services.AddScoped<ITrainRepository, TrainRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();

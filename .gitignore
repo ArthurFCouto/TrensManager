@@ -12,6 +12,8 @@
 
 Migrations/
 _migrations.txt
+/Migrations/
+/_migrations.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

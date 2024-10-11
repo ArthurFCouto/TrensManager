@@ -5,6 +5,7 @@ using TrensManager.Repositories.Interface;
 
 namespace TrensManager.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TrainController : ControllerBase
@@ -13,10 +14,9 @@ namespace TrensManager.Controllers
         public TrainController(ITrainRepository trainRepository)
         {
             _trainRepository = trainRepository;
-           
+
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<TrainModel>> Add([FromBody] TrainModel trainModel)
         {
@@ -24,7 +24,6 @@ namespace TrensManager.Controllers
             return Ok(train);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<TrainModel>>> GetAll()
         {
@@ -32,26 +31,23 @@ namespace TrensManager.Controllers
             return Ok(trains);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrainModel>> GetById(int id)
+        public async Task<ActionResult<TrainModel>> GetById([FromRoute] int id)
         {
             TrainModel train = await _trainRepository.GetById(id);
             return Ok(train);
         }
 
-        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult<TrainModel>> Update([FromBody] TrainModel trainModel, int id)
+        public async Task<ActionResult<TrainModel>> Update([FromBody] TrainModel trainModel, [FromRoute] int id)
         {
             trainModel.Id = id;
             TrainModel train = await _trainRepository.Update(trainModel, id);
             return Ok(train);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             bool response = await _trainRepository.Delete(id);
             return Ok(response);
