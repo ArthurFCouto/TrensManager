@@ -5,6 +5,7 @@ using TrensManager.Repositories.Interface;
 
 namespace TrensManager.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VehicleController : ControllerBase
@@ -15,7 +16,6 @@ namespace TrensManager.Controllers
             _vehicleRepository = vehicleRepository;
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<VehicleModel>> Add([FromBody] VehicleModel vehicleModel)
         {
@@ -23,7 +23,6 @@ namespace TrensManager.Controllers
             return Ok(vehicle);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<VehicleModel>>> GetAll()
         {
@@ -31,34 +30,30 @@ namespace TrensManager.Controllers
             return Ok(vehicles);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<VehicleModel>> GetById(int id)
+        public async Task<ActionResult<VehicleModel>> GetById([FromRoute] int id)
         {
             VehicleModel vehicle = await _vehicleRepository.GetById(id);
             return Ok(vehicle);
         }
 
-        [Authorize]
         [HttpGet("code/{code}")]
-        public async Task<ActionResult<VehicleModel>> GetByCode(string code)
+        public async Task<ActionResult<VehicleModel>> GetByCode([FromRoute] string code)
         {
             VehicleModel vehicle = await _vehicleRepository.GetByCode(code);
             return Ok(vehicle);
         }
 
-        [Authorize]
         [HttpPut("{id}")]
-        public async Task<ActionResult<VehicleModel>> Update([FromBody] VehicleModel vehicleModel, int id)
+        public async Task<ActionResult<VehicleModel>> Update([FromBody] VehicleModel vehicleModel, [FromRoute] int id)
         {
             vehicleModel.Id = id;
             VehicleModel vehicle = await _vehicleRepository.Update(vehicleModel, id);
             return Ok(vehicle);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             bool response = await _vehicleRepository.Delete(id);
             return Ok(response);
