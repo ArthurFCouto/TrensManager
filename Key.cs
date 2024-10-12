@@ -2,6 +2,6 @@
 {
     public class Key
     {
-        public static string Secret = "chaved&acess0";
+        public static string Secret = "This is my custom Secret key for authentication";
     }
 }

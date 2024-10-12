@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TrensManager.DTO.UserDTO;
 using TrensManager.Models;
 using TrensManager.Repositories.Interface;
 using TrensManager.Services;
@@ -21,49 +22,82 @@ namespace TrensManager.Controllers
         // Anotação que informa que esse método não necessita de token para ser acessado, apesar de estar dentro de uma classe que necessita
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserModel>> Add([FromBody] UserModel userModel)
+        public async Task<ActionResult<UserResponse>> Add([FromBody] UserRequest userRequest)
         {
-            UserModel user = await _userRepository.Add(userModel);
-            return Ok(user);
+            UserResponse userResponse = await _userRepository.Add(userRequest);
+            return Ok(userResponse);
         }
-        
+
         [HttpGet]
-        public async Task<ActionResult<List<UserModel>>> GetAll()
+        public async Task<ActionResult<List<UserResponse>>> GetAll()
         {
-            List<UserModel> users = await _userRepository.GetAll();
-            return Ok(users);
+            List<UserResponse> userResponseList = await _userRepository.GetAll();
+            return Ok(userResponseList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetById([FromRoute] int id)
+        public async Task<ActionResult<UserResponse>> GetById([FromRoute] int id)
         {
-            UserModel user = await _userRepository.GetById(id);
-            return Ok(user);
+            try
+            {
+                UserResponse userResponse = await _userRepository.GetById(id);
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [AllowAnonymous]
         [HttpGet("token")]
-        public async Task<ActionResult<string>> GetToken([FromQuery] string userName, [FromQuery] string userPassword)
+        public async Task<ActionResult<string>> GetToken([FromBody] UserRequest userRequest)
         {
-            UserModel user = await _userRepository.GetByUserName(userName);
-            if(user.UserPassword == userPassword)
-                return Ok(ServiceToken.GenerateToken(user));
-            return BadRequest();
+            try
+            {
+                UserResponseWithPassword userResponse = await _userRepository.GetByUserName(userRequest.UserName);
+                if (userResponse.UserPassword != userRequest.UserPassword)
+                    throw new Exception("UserName or Password incorrect!");
+                UserModel userModel = new UserModel
+                {
+                    Id = userResponse.Id,
+                    UserName = userResponse.UserName,
+                    UserPassword = userResponse.UserPassword,
+                    Roles = userResponse.Roles
+                };
+                return Ok(ServiceToken.GenerateToken(userModel));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, [FromRoute] int id)
+        public async Task<ActionResult<UserResponse>> Update([FromBody] UserRequest userRequest, [FromRoute] int id)
         {
-            userModel.Id = id;
-            UserModel user = await _userRepository.Update(userModel, id);
-            return Ok(user);
+            try
+            {
+                UserResponse userResponse = await _userRepository.Update(userRequest, id);
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
+            try { 
             bool response = await _userRepository.Delete(id);
             return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
