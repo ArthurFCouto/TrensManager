@@ -8,7 +8,7 @@ namespace TrensManager.Services
 {
     public class ServiceToken
     {
-        public static object GenerateToken(UserModel user)
+        public static string GenerateToken(UserModel user)
         {
             // Codificando a nossa Secret
             byte[] key = Encoding.ASCII.GetBytes(Key.Secret);
@@ -30,7 +30,7 @@ namespace TrensManager.Services
             // Criando o Token de fato
             var tokenHandler = new JwtSecurityTokenHandler();
             string token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenConfig));
-            return new { token };
+            return token;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrensManager.Data;
+using TrensManager.DTO.UserDTO;
 using TrensManager.Models;
 using TrensManager.Repositories.Interface;
+using TrensManager.Services;
 
 namespace TrensManager.Repositories
 {
@@ -13,56 +15,62 @@ namespace TrensManager.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<UserModel> Add(UserModel user)
+        public async Task<UserResponseWithToken> Add(UserRequest userRequest)
         {
-            user.Roles = Enums.UserRoles.User;
-            await _dbContext.User.AddAsync(user);
+            UserModel userModel = new UserModel {
+                UserName = userRequest.UserName,
+                UserPassword = userRequest.UserPassword,
+                Roles = Enums.UserRoles.User 
+            };
+            string token = ServiceToken.GenerateToken(userModel);
+            await _dbContext.User.AddAsync(userModel);
             await _dbContext.SaveChangesAsync();
-
-            return user;
+            return new UserResponseWithToken(userModel, token);
         }
 
-        public async Task<List<UserModel>> GetAll()
+        public async Task<List<UserResponse>> GetAll()
         {
-            List<UserModel> users = await _dbContext.User.ToListAsync();
-            users.Select((user) => new { user.Id, user.UserName, UserPassword = "********", user.Roles }).ToList();
-            return users;
+            List<UserModel> userModelList = await _dbContext.User.ToListAsync();
+            List<UserResponse> userResponse = new List<UserResponse>();
+            foreach (UserModel userModel in userModelList)
+                userResponse.Add(new UserResponse(userModel));
+            return userResponse;
         }
 
-        public async Task<UserModel> GetById(int id)
+        public async Task<UserResponse> GetById(int id)
         {
-            UserModel user = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
-            if (user == null) throw new Exception($"The user with Id {id} isn't found in the database.");
-            user.UserPassword = "********";
-            return user;
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
+            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+            return new UserResponse(userModel);
         }
 
-        public async Task<UserModel> GetByUserName(string userName)
+        public async Task<UserResponseWithPassword> GetByUserName(string userName)
         {
-            return await _dbContext.User.FirstOrDefaultAsync((data) => data.UserName == userName) ?? throw new Exception($"The user with UserName {userName} isn't found in the database.");
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.UserName == userName);
+            if (userModel == null) throw new Exception($"The user with UserName {userName} isn't found in the database.");
+            return new UserResponseWithPassword(userModel);
         }
 
-        public async Task<UserModel> Update(UserModel user, int id)
+        public async Task<UserResponse> Update(UserRequest userRequest, int id)
         {
-            UserModel userById = await GetById(id);
-
-            userById.UserName = user.UserName;
-            userById.UserPassword = user.UserPassword;
-            userById.Roles = user.Roles;
-
-            _dbContext.User.Update(userById);
+            UserResponse userResponse = await GetById(id);
+            UserModel userModel = new UserModel {
+                Id = userResponse.Id,
+                UserName = userRequest.UserName,
+                UserPassword = userRequest.UserPassword,
+                Roles = userResponse.Roles
+            };
+            _dbContext.User.Update(userModel);
             await _dbContext.SaveChangesAsync();
-
-            return userById;
+            return new UserResponse(userModel);
         }
 
         public async Task<bool> Delete(int id)
         {
-            UserModel userById = await GetById(id);
-
-            _dbContext.User.Remove(userById);
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
+            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+            _dbContext.User.Remove(userModel);
             await _dbContext.SaveChangesAsync();
-
             return true;
         }
     }

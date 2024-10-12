@@ -23,4 +23,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\VehicleDTO\" />
+    <Folder Include="DTO\TrainDTO\" />
+  </ItemGroup>
+
 </Project>

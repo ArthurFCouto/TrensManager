@@ -1,14 +1,15 @@
-﻿using TrensManager.Models;
+﻿using TrensManager.DTO.UserDTO;
+using TrensManager.Models;
 
 namespace TrensManager.Repositories.Interface
 {
     public interface IUserRepository
     {
-        Task<List<UserModel>> GetAll();
-        Task<UserModel> GetById(int id);
-        Task<UserModel> GetByUserName(string userName);
-        Task<UserModel> Add(UserModel user);
-        Task<UserModel> Update(UserModel user, int id);
+        Task<List<UserResponse>> GetAll();
+        Task<UserResponse> GetById(int id);
+        Task<UserResponseWithPassword> GetByUserName(string userName);
+        Task<UserResponseWithToken> Add(UserRequest userReques);
+        Task<UserResponse> Update(UserRequest userRequest, int id);
         Task<bool> Delete(int id);
     }
 }
