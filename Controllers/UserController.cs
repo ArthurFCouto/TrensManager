@@ -51,19 +51,19 @@ namespace TrensManager.Controllers
 
         [AllowAnonymous]
         [HttpGet("token")]
-        public async Task<ActionResult<string>> GetToken([FromBody] UserRequest userRequest)
+        public async Task<ActionResult<object>> GetToken([FromQuery] string userName, [FromQuery] string userPassword)
         {
             try
             {
-                UserResponseWithPassword userResponse = await _userRepository.GetByUserName(userRequest.UserName);
-                if (userResponse.UserPassword != userRequest.UserPassword)
+                UserResponseWithPassword userResponse = await _userRepository.GetByUserName(userName);
+                if (userResponse.UserPassword != userPassword)
                     throw new Exception("UserName or Password incorrect!");
                 UserModel userModel = new UserModel
                 {
                     Id = userResponse.Id,
                     UserName = userResponse.UserName,
                     UserPassword = userResponse.UserPassword,
-                    Roles = userResponse.Roles
+                    Role = userResponse.Role
                 };
                 return Ok(ServiceToken.GenerateToken(userModel));
             }

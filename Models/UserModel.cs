@@ -7,6 +7,6 @@ namespace TrensManager.Models
         public int Id { get; set; }
         public required string UserName { get; set; }
         public required string UserPassword { get; set; }
-        public required UserRoles Roles { get; set; }
+        public required UserRoles Role { get; set; }
     }
 }

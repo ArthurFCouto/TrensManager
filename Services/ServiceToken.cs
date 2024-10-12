@@ -16,12 +16,12 @@ namespace TrensManager.Services
             var tokenConfig = new SecurityTokenDescriptor
             {
                 // Informando o que será salvo dentro do Token
-                Subject = new ClaimsIdentity(
-                [
-                    new Claim("userId", user.Id.ToString()),
-                    new Claim("userRoles", user.Roles.ToString()),
+                Subject = new ClaimsIdentity(new Claim[] {
+
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim("Role", user.Role.ToString()),
                     new Claim("userName", user.UserName.ToString())
-                ]),
+                }),
                 // Informando o tempo de expiração do Token
                 Expires = DateTime.UtcNow.AddHours(6),
                 // Informando o tipo de criptografia que será utilizada

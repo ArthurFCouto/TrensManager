@@ -20,7 +20,7 @@ namespace TrensManager.Repositories
             UserModel userModel = new UserModel {
                 UserName = userRequest.UserName,
                 UserPassword = userRequest.UserPassword,
-                Roles = Enums.UserRoles.User 
+                Role = Enums.UserRoles.User 
             };
             string token = ServiceToken.GenerateToken(userModel);
             await _dbContext.User.AddAsync(userModel);
@@ -58,7 +58,7 @@ namespace TrensManager.Repositories
                 Id = userResponse.Id,
                 UserName = userRequest.UserName,
                 UserPassword = userRequest.UserPassword,
-                Roles = userResponse.Roles
+                Role = userResponse.Role
             };
             _dbContext.User.Update(userModel);
             await _dbContext.SaveChangesAsync();

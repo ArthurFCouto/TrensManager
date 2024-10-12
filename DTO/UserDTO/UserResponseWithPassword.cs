@@ -9,7 +9,7 @@ namespace TrensManager.DTO.UserDTO
             Id = userModel.Id;
             UserName = userModel.UserName;
             UserPassword = userModel.UserPassword;
-            Roles = userModel.Roles;
+            Role = userModel.Role;
         }
     }
 }

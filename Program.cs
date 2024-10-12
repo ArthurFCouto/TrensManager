@@ -14,24 +14,22 @@ namespace TrensManager
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddControllers();
-
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-
             builder.Services.AddSwaggerGen((data) =>
             {
-                data.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                data.SwaggerDoc("v1", new OpenApiInfo { Title = "TrainsManager", Version = "v1" });
+                data.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    Name = "Authorization",
+                    BearerFormat = "JWT",
                     In = ParameterLocation.Header,
+                    Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
-
-                data.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                data.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -41,32 +39,28 @@ namespace TrensManager
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header
                         },
                         new List<string>()
                     }
                 });
             });
-
             builder.Services.AddAuthentication((data) =>
             {
                 data.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 data.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer((dataJwt) =>
-            {
-                dataJwt.RequireHttpsMetadata = false;
-                dataJwt.SaveToken = true;
-                dataJwt.TokenValidationParameters = new TokenValidationParameters
+            })
+                .AddJwtBearer((dataJwt) =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Key.Secret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
-
+                    dataJwt.RequireHttpsMetadata = false;
+                    dataJwt.SaveToken = true;
+                    dataJwt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Key.Secret)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<TrainSystemDBContext>(
                     (options) => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
@@ -77,7 +71,6 @@ namespace TrensManager
             builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -86,6 +79,8 @@ namespace TrensManager
             }
 
             app.UseHttpsRedirection();
+            // Inserido após a configuração do JWT
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

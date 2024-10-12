@@ -10,11 +10,11 @@ namespace TrensManager.DTO.UserDTO
             Id = userModel.Id;
             UserName = userModel.UserName;
             UserPassword = "********";
-            Roles = userModel.Roles;
+            Role = userModel.Role;
         }
         public int Id { get; set; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
-        public UserRoles Roles { get; set; }
+        public UserRoles Role { get; set; }
     }
 }

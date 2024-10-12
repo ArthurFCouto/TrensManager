@@ -11,7 +11,7 @@ namespace TrensManager.Data.Map
             builder.HasKey((data) => data.Id);
             builder.Property((data) => data.UserName).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.UserPassword).IsRequired().HasMaxLength(64);
-            builder.Property((data) => data.Roles).IsRequired();
+            builder.Property((data) => data.Role).IsRequired();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TrensManager.DTO.UserDTO
             Id = userModel.Id;
             UserName = userModel.UserName;
             UserPassword = "********";
-            Roles = userModel.Roles;
+            Role = userModel.Role;
             Token = token;
         }
         public string Token { get; set; }

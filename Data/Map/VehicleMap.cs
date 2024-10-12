@@ -10,6 +10,7 @@ namespace TrensManager.Data.Map
         {
             builder.HasKey((data) => data.Id);
             builder.Property((data) => data.Type).IsRequired();
+            builder.HasIndex(data => data.Code).IsUnique();
             builder.Property((data) => data.Code).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.TrainId);
             builder.HasOne((data) => data.Train).WithMany((data) => data.Vehicles).HasForeignKey((data) => data.TrainId);
