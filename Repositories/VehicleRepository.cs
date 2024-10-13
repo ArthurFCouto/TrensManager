@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrensManager.Data;
+using TrensManager.DTO.VehicleDTO;
 using TrensManager.Models;
 using TrensManager.Repositories.Interface;
 
@@ -12,47 +13,60 @@ namespace TrensManager.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<VehicleModel> Add(VehicleModel vehicle)
+        public async Task<VehicleResponse> Add(VehicleRequest vehicleRequest)
         {
-            await _dbContext.AddAsync(vehicle);
+            VehicleModel vehicleModel = new VehicleModel
+            {
+                Code = vehicleRequest.Code,
+                Type = vehicleRequest.Type,
+                TrainId = vehicleRequest.TrainId
+            };
+            await _dbContext.AddAsync(vehicleModel);
             await _dbContext.SaveChangesAsync();
-            return vehicle;
+            return new VehicleResponse(vehicleModel);
         }
-        public async Task<List<VehicleModel>> GetAll()
+        public async Task<List<VehicleResponse>> GetAll()
         {
-            return await _dbContext.Vehicle.Include((data) => data.Train).ToListAsync();
-        }
-
-        public async Task<VehicleModel> GetByCode(string code)
-        {
-            return await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data)=> data.Code == code) ?? throw new Exception($"The Vehicle with Code {code} isn't found in the database."); ;
+            List<VehicleModel> vehicleModelList = await _dbContext.Vehicle.Include((data) => data.Train).ToListAsync();
+            return vehicleModelList.Select((vehicleModel) => new VehicleResponse(vehicleModel)).ToList();
         }
 
-        public async Task<VehicleModel> GetById(int id)
+        public async Task<VehicleResponse> GetByCode(string code)
         {
-            return await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data)=> data.Id == id) ?? throw new Exception($"The Vehicle with Id {id} isn't found in the database."); ;
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data) => data.Code == code);
+            if (vehicleModel == null) throw new Exception($"The Vehicle with Code {code} isn't found in the database.");
+            return new VehicleResponse(vehicleModel);
         }
 
-        public async Task<VehicleModel> Update(VehicleModel vehicle, int id)
+        public async Task<VehicleResponse> GetById(int id)
         {
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data) => data.Id == id);
+            if (vehicleModel == null) throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
+            return new VehicleResponse(vehicleModel);
+        }
 
-            VehicleModel vehicleById = await GetById(id);
+        public async Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id)
+        {
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data) => data.Id == id);
+            if (vehicleModel == null) throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
-            vehicleById.Type = vehicle.Type;
-            vehicleById.Code = vehicle.Code;
-            vehicleById.TrainId = vehicle.TrainId;
+            vehicleModel.Code = vehicleRequest.Code;
+            vehicleModel.Id = id;
+            vehicleModel.TrainId = vehicleRequest.TrainId;
+            vehicleModel.Type = vehicleRequest.Type;
 
-            _dbContext.Vehicle.Update(vehicleById);
+            _dbContext.Vehicle.Update(vehicleModel);
             await _dbContext.SaveChangesAsync();
 
-            return vehicleById;
+            return new VehicleResponse(vehicleModel);
         }
 
         public async Task<bool> Delete(int id)
         {
-            VehicleModel vehicleById = await GetById(id);
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data) => data.Id == id);
+            if (vehicleModel == null) throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
-            _dbContext.Remove(vehicleById);
+            _dbContext.Remove(vehicleModel);
             await _dbContext.SaveChangesAsync();
 
             return true;

@@ -31,10 +31,7 @@ namespace TrensManager.Repositories
         public async Task<List<UserResponse>> GetAll()
         {
             List<UserModel> userModelList = await _dbContext.User.ToListAsync();
-            List<UserResponse> userResponseList = new List<UserResponse>();
-            foreach (UserModel userModel in userModelList)
-                userResponseList.Add(new UserResponse(userModel));
-            return userResponseList;
+            return userModelList.Select((userModel) => new UserResponse(userModel)).ToList();
         }
 
         public async Task<UserResponse> GetById(int id)

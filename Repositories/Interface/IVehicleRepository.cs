@@ -1,14 +1,14 @@
-﻿using TrensManager.Models;
+﻿using TrensManager.DTO.VehicleDTO;
 
 namespace TrensManager.Repositories.Interface
 {
     public interface IVehicleRepository
     {
-        Task<List<VehicleModel>> GetAll();
-        Task<VehicleModel> GetByCode(string code);
-        Task<VehicleModel> GetById(int id);
-        Task<VehicleModel> Add(VehicleModel vehicle);
-        Task<VehicleModel> Update(VehicleModel vehicle, int id);
+        Task<List<VehicleResponse>> GetAll();
+        Task<VehicleResponse> GetByCode(string code);
+        Task<VehicleResponse> GetById(int id);
+        Task<VehicleResponse> Add(VehicleRequest vehicleRequest);
+        Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id);
         Task<bool> Delete(int id);
     }
 }
