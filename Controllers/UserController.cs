@@ -60,10 +60,12 @@ namespace TrensManager.Controllers
                     throw new Exception("UserName or Password incorrect!");
                 UserModel userModel = new UserModel
                 {
+                    CreatedAt = DateTime.Now,
                     Id = userResponse.Id,
+                    Role = userResponse.Role,
+                    UpdatedAt = userResponse.UpdatedAt,
                     UserName = userResponse.UserName,
-                    UserPassword = userResponse.UserPassword,
-                    Role = userResponse.Role
+                    UserPassword = userResponse.UserPassword
                 };
                 return Ok(ServiceToken.GenerateToken(userModel));
             }
@@ -90,9 +92,10 @@ namespace TrensManager.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
-            try { 
-            bool response = await _userRepository.Delete(id);
-            return Ok(response);
+            try
+            {
+                bool response = await _userRepository.Delete(id);
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -7,9 +7,9 @@ namespace TrensManager.DTO.UserDTO
         public UserResponseWithPassword(UserModel userModel) : base(userModel)
         {
             Id = userModel.Id;
+            Role = userModel.Role;
             UserName = userModel.UserName;
             UserPassword = userModel.UserPassword;
-            Role = userModel.Role;
         }
     }
 }

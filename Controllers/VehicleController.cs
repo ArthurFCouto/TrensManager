@@ -19,7 +19,8 @@ namespace TrensManager.Controllers
         [HttpPost]
         public async Task<ActionResult<VehicleResponse>> Add([FromBody] VehicleRequest vehicleRequest)
         {
-            VehicleResponse vehicleResponse = await _vehicleRepository.Add(vehicleRequest);
+            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
+            VehicleResponse vehicleResponse = await _vehicleRepository.Add(vehicleRequest, userNameToken);
             return Ok(vehicleResponse);
         }
 
@@ -47,7 +48,8 @@ namespace TrensManager.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<VehicleResponse>> Update([FromBody] VehicleRequest vehicleRequest, [FromRoute] int id)
         {
-            VehicleResponse vehicleResponse = await _vehicleRepository.Update(vehicleRequest, id);
+            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
+            VehicleResponse vehicleResponse = await _vehicleRepository.Update(vehicleRequest, id, userNameToken);
             return Ok(vehicleResponse);
         }
 

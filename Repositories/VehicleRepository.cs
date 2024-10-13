@@ -13,7 +13,7 @@ namespace TrensManager.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<VehicleResponse> Add(VehicleRequest vehicleRequest)
+        public async Task<VehicleResponse> Add(VehicleRequest vehicleRequest, string userName)
         {
             VehicleModel vehicleModel = new VehicleModel
             {
@@ -22,8 +22,8 @@ namespace TrensManager.Repositories
                 Code = vehicleRequest.Code,
                 Type = vehicleRequest.Type,
                 TrainId = vehicleRequest.TrainId,
-                CreatedByUser = null,
-                UpdatedByUser = null
+                CreatedByUser = userName,
+                UpdatedByUser = userName
             };
             await _dbContext.AddAsync(vehicleModel);
             await _dbContext.SaveChangesAsync();
@@ -49,11 +49,12 @@ namespace TrensManager.Repositories
             return new VehicleResponse(vehicleModel);
         }
 
-        public async Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id)
+        public async Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id, string userName)
         {
             VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Train).FirstOrDefaultAsync((data) => data.Id == id);
             if (vehicleModel == null) throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
+            vehicleModel.UpdatedByUser = userName;
             vehicleModel.Code = vehicleRequest.Code;
             vehicleModel.TrainId = vehicleRequest.TrainId;
             vehicleModel.Type = vehicleRequest.Type;

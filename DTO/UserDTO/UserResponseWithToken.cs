@@ -7,10 +7,10 @@ namespace TrensManager.DTO.UserDTO
         public UserResponseWithToken(UserModel userModel, string token) : base(userModel)
         {
             Id = userModel.Id;
-            UserName = userModel.UserName;
-            UserPassword = "********";
             Role = userModel.Role;
             Token = token;
+            UserName = userModel.UserName;
+            UserPassword = "********";
         }
         public string Token { get; set; }
     }

@@ -17,10 +17,13 @@ namespace TrensManager.Repositories
 
         public async Task<UserResponseWithToken> Add(UserRequest userRequest)
         {
-            UserModel userModel = new UserModel {
+            UserModel userModel = new UserModel
+            {
+                CreatedAt = DateTime.Now,
+                Role = Enums.UserRoles.User,
+                UpdatedAt = DateTime.Now,
                 UserName = userRequest.UserName,
                 UserPassword = userRequest.UserPassword,
-                Role = Enums.UserRoles.User 
             };
             string token = ServiceToken.GenerateToken(userModel);
             await _dbContext.User.AddAsync(userModel);
@@ -50,13 +53,13 @@ namespace TrensManager.Repositories
 
         public async Task<UserResponse> Update(UserRequest userRequest, int id)
         {
-            UserResponse userResponse = await GetById(id);
-            UserModel userModel = new UserModel {
-                Id = userResponse.Id,
-                UserName = userRequest.UserName,
-                UserPassword = userRequest.UserPassword,
-                Role = userResponse.Role
-            };
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
+            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+
+            userModel.UpdatedAt = DateTime.UtcNow;
+            userModel.UserName = userRequest.UserName;
+            userModel.UserPassword = userRequest.UserPassword;
+
             _dbContext.User.Update(userModel);
             await _dbContext.SaveChangesAsync();
             return new UserResponse(userModel);
