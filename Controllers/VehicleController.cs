@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TrensManager.Models;
+using TrensManager.DTO.VehicleDTO;
 using TrensManager.Repositories.Interface;
 
 namespace TrensManager.Controllers
@@ -17,39 +17,38 @@ namespace TrensManager.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<VehicleModel>> Add([FromBody] VehicleModel vehicleModel)
+        public async Task<ActionResult<VehicleResponse>> Add([FromBody] VehicleRequest vehicleRequest)
         {
-            VehicleModel vehicle = await _vehicleRepository.Add(vehicleModel);
-            return Ok(vehicle);
+            VehicleResponse vehicleResponse = await _vehicleRepository.Add(vehicleRequest);
+            return Ok(vehicleResponse);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<VehicleModel>>> GetAll()
+        public async Task<ActionResult<List<VehicleResponse>>> GetAll()
         {
-            List<VehicleModel> vehicles = await _vehicleRepository.GetAll();
-            return Ok(vehicles);
+            List<VehicleResponse> vehicleResponseList = await _vehicleRepository.GetAll();
+            return Ok(vehicleResponseList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<VehicleModel>> GetById([FromRoute] int id)
+        public async Task<ActionResult<VehicleResponse>> GetById([FromRoute] int id)
         {
-            VehicleModel vehicle = await _vehicleRepository.GetById(id);
-            return Ok(vehicle);
+            VehicleResponse vehicleResponse = await _vehicleRepository.GetById(id);
+            return Ok(vehicleResponse);
         }
 
         [HttpGet("code/{code}")]
-        public async Task<ActionResult<VehicleModel>> GetByCode([FromRoute] string code)
+        public async Task<ActionResult<VehicleResponse>> GetByCode([FromRoute] string code)
         {
-            VehicleModel vehicle = await _vehicleRepository.GetByCode(code);
-            return Ok(vehicle);
+            VehicleResponse vehicleResponse = await _vehicleRepository.GetByCode(code);
+            return Ok(vehicleResponse);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<VehicleModel>> Update([FromBody] VehicleModel vehicleModel, [FromRoute] int id)
+        public async Task<ActionResult<VehicleResponse>> Update([FromBody] VehicleRequest vehicleRequest, [FromRoute] int id)
         {
-            vehicleModel.Id = id;
-            VehicleModel vehicle = await _vehicleRepository.Update(vehicleModel, id);
-            return Ok(vehicle);
+            VehicleResponse vehicleResponse = await _vehicleRepository.Update(vehicleRequest, id);
+            return Ok(vehicleResponse);
         }
 
         [HttpDelete("{id}")]

@@ -20,7 +20,7 @@ namespace TrensManager.Services
 
                     new Claim("Id", user.Id.ToString()),
                     new Claim("Role", user.Role.ToString()),
-                    new Claim("userName", user.UserName.ToString())
+                    new Claim("UserName", user.UserName.ToString())
                 }),
                 // Informando o tempo de expiração do Token
                 Expires = DateTime.UtcNow.AddHours(6),

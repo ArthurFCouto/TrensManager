@@ -17,9 +17,13 @@ namespace TrensManager.Repositories
         {
             VehicleModel vehicleModel = new VehicleModel
             {
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
                 Code = vehicleRequest.Code,
                 Type = vehicleRequest.Type,
-                TrainId = vehicleRequest.TrainId
+                TrainId = vehicleRequest.TrainId,
+                CreatedByUser = null,
+                UpdatedByUser = null
             };
             await _dbContext.AddAsync(vehicleModel);
             await _dbContext.SaveChangesAsync();
@@ -51,9 +55,9 @@ namespace TrensManager.Repositories
             if (vehicleModel == null) throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
             vehicleModel.Code = vehicleRequest.Code;
-            vehicleModel.Id = id;
             vehicleModel.TrainId = vehicleRequest.TrainId;
             vehicleModel.Type = vehicleRequest.Type;
+            vehicleModel.UpdatedAt = DateTime.Now;
 
             _dbContext.Vehicle.Update(vehicleModel);
             await _dbContext.SaveChangesAsync();
