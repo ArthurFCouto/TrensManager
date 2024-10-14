@@ -13,7 +13,7 @@ namespace TrensManager.Data.Map
             builder.Property((data) => data.Role).IsRequired();
             builder.Property((data) => data.UpdatedAt);
             builder.Property((data) => data.UserName).IsRequired().HasMaxLength(64);
-            builder.Property((data) => data.UserPassword).IsRequired().HasMaxLength(64);
+            builder.Property((data) => data.UserPassword).IsRequired().HasMaxLength(32);
         }
     }
 }
