@@ -89,6 +89,7 @@ namespace TrensManager.Controllers
             }
         }
 
+        [Authorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {

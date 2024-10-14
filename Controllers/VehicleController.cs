@@ -16,6 +16,7 @@ namespace TrensManager.Controllers
             _vehicleRepository = vehicleRepository;
         }
 
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<ActionResult<VehicleResponse>> Add([FromBody] VehicleRequest vehicleRequest)
         {
@@ -45,6 +46,7 @@ namespace TrensManager.Controllers
             return Ok(vehicleResponse);
         }
 
+        [Authorize("Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<VehicleResponse>> Update([FromBody] VehicleRequest vehicleRequest, [FromRoute] int id)
         {
@@ -53,6 +55,7 @@ namespace TrensManager.Controllers
             return Ok(vehicleResponse);
         }
 
+        [Authorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {

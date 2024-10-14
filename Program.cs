@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TrensManager.Data;
+using TrensManager.Enums;
 using TrensManager.Repositories;
 using TrensManager.Repositories.Interface;
 
@@ -61,6 +62,11 @@ namespace TrensManager
                         ValidateAudience = false
                     };
                 });
+            builder.Services.AddAuthorization((options) =>
+            {
+                options.AddPolicy("User", policy => policy.RequireClaim("Role", UserRoles.User.ToString()));
+                options.AddPolicy("Admin", policy => policy.RequireClaim("Role", UserRoles.Admin.ToString()));
+            });
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<TrainSystemDBContext>(
                     (options) => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
