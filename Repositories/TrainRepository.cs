@@ -16,15 +16,15 @@ namespace TrensManager.Repositories
 
         public async Task<TrainResponse> Add(TrainRequest trainRequest, string userName)
         {
-            List<VehicleModel> vehicles = new List<VehicleModel>();
+            List<VehicleModel> vehicleModelList = new List<VehicleModel>();
 
             if (trainRequest.VehicleCodes != null && trainRequest.VehicleCodes.Count > 0)
             {
                 foreach (string code in trainRequest.VehicleCodes)
                 {
-                    VehicleModel vehicle = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Code == code);
-                    if (vehicle != null)
-                        vehicles.Add(vehicle);
+                    VehicleModel vehicleModel = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Code == code);
+                    if (vehicleModel != null)
+                        vehicleModelList.Add(vehicleModel);
                 }
             }
 
@@ -37,7 +37,7 @@ namespace TrensManager.Repositories
                 Origin = trainRequest.Origin,
                 UpdatedAt = DateTime.Now,
                 UpdatedByUser = userName,
-                Vehicles = vehicles
+                Vehicles = vehicleModelList
             };
 
             await _dbContext.Train.AddAsync(trainModel);
@@ -48,10 +48,10 @@ namespace TrensManager.Repositories
 
         public async Task<List<TrainResponse>> GetAll()
         {
-            List<TrainModel> trainModels = await _dbContext.Train
+            List<TrainModel> trainModelList = await _dbContext.Train
                 .Include((data) => data.Vehicles)
                 .ToListAsync();
-            return trainModels.Select((trainModel) => new TrainResponse(trainModel)).ToList();
+            return trainModelList.Select((trainModel) => new TrainResponse(trainModel)).ToList();
         }
 
         public async Task<TrainResponse> GetById(int id)
@@ -66,7 +66,7 @@ namespace TrensManager.Repositories
             TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
             if (trainModel == null) throw new Exception($"The Train with Id {id} isn't found in the database.");
 
-            List<VehicleModel> vehicleModels = new List<VehicleModel>();
+            List<VehicleModel> vehicleModelList = new List<VehicleModel>();
 
             if (trainRequest.VehicleCodes != null && trainRequest.VehicleCodes.Count > 0)
             {
@@ -74,7 +74,7 @@ namespace TrensManager.Repositories
                 {
                     VehicleModel vehicleModel = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Code == code);
                     if (vehicleModel != null)
-                        vehicleModels.Add(vehicleModel);
+                        vehicleModelList.Add(vehicleModel);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace TrensManager.Repositories
             trainModel.Origin = trainRequest.Origin;
             trainModel.UpdatedAt = DateTime.Now;
             trainModel.UpdatedByUser = userName;
-            trainModel.Vehicles = vehicleModels;
+            trainModel.Vehicles = vehicleModelList;
 
             _dbContext.Train.Update(trainModel);
             await _dbContext.SaveChangesAsync();

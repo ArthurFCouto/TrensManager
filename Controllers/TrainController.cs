@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TrensManager.Models;
+using TrensManager.DTO.TrainDTO;
 using TrensManager.Repositories.Interface;
 
 namespace TrensManager.Controllers
@@ -14,36 +14,36 @@ namespace TrensManager.Controllers
         public TrainController(ITrainRepository trainRepository)
         {
             _trainRepository = trainRepository;
-
         }
 
         [HttpPost]
-        public async Task<ActionResult<TrainModel>> Add([FromBody] TrainModel trainModel)
+        public async Task<ActionResult<TrainResponse>> Add([FromBody] TrainRequest trainRequest)
         {
-            TrainModel train = await _trainRepository.Add(trainModel);
-            return Ok(train);
+            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
+            TrainResponse trainResponse = await _trainRepository.Add(trainRequest, userNameToken);
+            return Ok(trainResponse);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TrainModel>>> GetAll()
+        public async Task<ActionResult<List<TrainResponse>>> GetAll()
         {
-            List<TrainModel> trains = await _trainRepository.GetAll();
-            return Ok(trains);
+            List<TrainResponse> trainResponseList = await _trainRepository.GetAll();
+            return Ok(trainResponseList);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrainModel>> GetById([FromRoute] int id)
+        public async Task<ActionResult<TrainResponse>> GetById([FromRoute] int id)
         {
-            TrainModel train = await _trainRepository.GetById(id);
-            return Ok(train);
+            TrainResponse trainResponse = await _trainRepository.GetById(id);
+            return Ok(trainResponse);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TrainModel>> Update([FromBody] TrainModel trainModel, [FromRoute] int id)
+        public async Task<ActionResult<TrainResponse>> Update([FromBody] TrainRequest trainRequest, [FromRoute] int id)
         {
-            trainModel.Id = id;
-            TrainModel train = await _trainRepository.Update(trainModel, id);
-            return Ok(train);
+            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
+            TrainResponse trainResponse = await _trainRepository.Update(trainRequest, id, userNameToken);
+            return Ok(trainResponse);
         }
 
         [HttpDelete("{id}")]
