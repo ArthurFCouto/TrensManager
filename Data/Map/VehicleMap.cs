@@ -13,8 +13,11 @@ namespace TrensManager.Data.Map
             builder.Property((data) => data.CreatedAt);
             builder.Property((data) => data.CreatedByUser);
             builder.HasKey((data) => data.Id);
-            builder.HasOne((data) => data.Train).WithMany((data) => data.Vehicles).HasForeignKey((data) => data.TrainId);
-            builder.Property((data) => data.TrainId);
+            // O código abaixo é utilizado para relacionamento 1:N
+            // builder.HasOne((data) => data.Train).WithMany((data) => data.Vehicles).HasForeignKey((data) => data.TrainId);
+            // builder.Property((data) => data.TrainId);
+            // Com o código abaixo o EntityFramework cria automaticamente a tabela de junção
+            builder.HasMany((data) => data.Trains).WithMany((data) => data.Vehicles);
             builder.Property((data) => data.Type).IsRequired();
             builder.Property((data) => data.UpdatedAt);
             builder.Property((data) => data.UpdatedByUser);

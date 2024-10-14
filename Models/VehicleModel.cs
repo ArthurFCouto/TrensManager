@@ -8,8 +8,7 @@ namespace TrensManager.Models
         public required DateTime CreatedAt { get; set; }
         public required string CreatedByUser { get; set; }
         public int Id { get; set; }
-        public TrainModel? Train { get; set; }
-        public int? TrainId { get; set; }
+        public ICollection<TrainModel>? Trains { get; set; }
         public required VehicleType Type { get; set; }
         public required DateTime UpdatedAt { get; set; }
         public required string UpdatedByUser { get; set; }

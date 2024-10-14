@@ -12,8 +12,7 @@ namespace TrensManager.DTO.VehicleDTO
             CreatedAt = vehicleModel.CreatedAt;
             CreatedByUser = vehicleModel.CreatedByUser;
             Id = vehicleModel.Id;
-            Train = vehicleModel.Train != null ? new TrainResponseWithoutVehicles(vehicleModel.Train) : null;
-            TrainId = vehicleModel.TrainId;
+            Trains = vehicleModel.Trains?.Select((trainModel) => new TrainResponseWithoutVehicles(trainModel)).ToList();
             Type = vehicleModel.Type;
             UpdatedAt = vehicleModel.UpdatedAt;
             UpdatedByUser = vehicleModel.UpdatedByUser;
@@ -22,8 +21,7 @@ namespace TrensManager.DTO.VehicleDTO
         public DateTime CreatedAt { get; set; }
         public string CreatedByUser { get; set; }
         public int Id { get; set; }
-        public TrainResponseWithoutVehicles? Train { get; set; }
-        public int? TrainId { get; set; }
+        public List<TrainResponseWithoutVehicles>? Trains { get; set; }
         public VehicleType Type { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string UpdatedByUser { get; set; }
