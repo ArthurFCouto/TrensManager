@@ -1,4 +1,5 @@
-﻿using TrensManager.Enums;
+﻿using TrensManager.DTO.TrainDTO;
+using TrensManager.Enums;
 using TrensManager.Models;
 
 namespace TrensManager.DTO.VehicleDTO
@@ -11,6 +12,7 @@ namespace TrensManager.DTO.VehicleDTO
             CreatedAt = vehicleModel.CreatedAt;
             CreatedByUser = vehicleModel.CreatedByUser;
             Id = vehicleModel.Id;
+            Train = new TrainResponseWithoutVehicles(vehicleModel.Train);
             TrainId = vehicleModel.TrainId;
             Type = vehicleModel.Type;
             UpdatedAt = vehicleModel.UpdatedAt;
@@ -20,6 +22,7 @@ namespace TrensManager.DTO.VehicleDTO
         public DateTime CreatedAt { get; set; }
         public string CreatedByUser { get; set; }
         public int Id { get; set; }
+        public TrainResponseWithoutVehicles? Train { get; set; }
         public int? TrainId { get; set; }
         public VehicleType Type { get; set; }
         public DateTime UpdatedAt { get; set; }
