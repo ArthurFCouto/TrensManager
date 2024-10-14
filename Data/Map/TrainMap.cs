@@ -11,11 +11,15 @@ namespace TrensManager.Data.Map
     {
         public void Configure(EntityTypeBuilder<TrainModel> builder)
         {
+            builder.Property((data) => data.CreatedAt);
+            builder.Property((data) => data.CreatedByUser);
+            builder.Property((data) => data.Destination).IsRequired().HasMaxLength(255);
             builder.HasKey((data) => data.Id);
             builder.HasIndex(x => x.NumberOS).IsUnique();
             builder.Property((data) => data.NumberOS).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.Origin).IsRequired().HasMaxLength(255);
-            builder.Property((data) => data.Destination).IsRequired().HasMaxLength(255);
+            builder.Property((data) => data.UpdatedAt);
+            builder.Property((data) => data.UpdatedByUser);
         }
     }
 }

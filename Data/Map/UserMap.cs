@@ -8,10 +8,12 @@ namespace TrensManager.Data.Map
     {
         public void Configure(EntityTypeBuilder<UserModel> builder)
         {
+            builder.Property((data) => data.CreatedAt);
             builder.HasKey((data) => data.Id);
+            builder.Property((data) => data.Role).IsRequired();
+            builder.Property((data) => data.UpdatedAt);
             builder.Property((data) => data.UserName).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.UserPassword).IsRequired().HasMaxLength(64);
-            builder.Property((data) => data.Role).IsRequired();
         }
     }
 }

@@ -8,12 +8,16 @@ namespace TrensManager.Data.Map
     {
         public void Configure(EntityTypeBuilder<VehicleModel> builder)
         {
-            builder.HasKey((data) => data.Id);
-            builder.Property((data) => data.Type).IsRequired();
             builder.HasIndex(data => data.Code).IsUnique();
             builder.Property((data) => data.Code).IsRequired().HasMaxLength(64);
-            builder.Property((data) => data.TrainId);
+            builder.Property((data) => data.CreatedAt);
+            builder.Property((data) => data.CreatedByUser);
+            builder.HasKey((data) => data.Id);
             builder.HasOne((data) => data.Train).WithMany((data) => data.Vehicles).HasForeignKey((data) => data.TrainId);
+            builder.Property((data) => data.TrainId);
+            builder.Property((data) => data.Type).IsRequired();
+            builder.Property((data) => data.UpdatedAt);
+            builder.Property((data) => data.UpdatedByUser);
         }
     }
 }
