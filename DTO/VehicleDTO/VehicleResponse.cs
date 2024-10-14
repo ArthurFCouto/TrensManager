@@ -12,7 +12,7 @@ namespace TrensManager.DTO.VehicleDTO
             CreatedAt = vehicleModel.CreatedAt;
             CreatedByUser = vehicleModel.CreatedByUser;
             Id = vehicleModel.Id;
-            Train = new TrainResponseWithoutVehicles(vehicleModel.Train);
+            Train = vehicleModel.Train != null ? new TrainResponseWithoutVehicles(vehicleModel.Train) : null;
             TrainId = vehicleModel.TrainId;
             Type = vehicleModel.Type;
             UpdatedAt = vehicleModel.UpdatedAt;
