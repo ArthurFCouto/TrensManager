@@ -26,8 +26,10 @@ namespace TrensManager.Repositories
                 UserPassword = userRequest.UserPassword,
             };
             string token = ServiceToken.GenerateToken(userModel);
+
             await _dbContext.User.AddAsync(userModel);
             await _dbContext.SaveChangesAsync();
+
             return new UserResponseWithToken(userModel, token);
         }
 
@@ -40,21 +42,26 @@ namespace TrensManager.Repositories
         public async Task<UserResponse> GetById(int id)
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
-            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+            if (userModel == null)
+                throw new Exception($"The user with Id {id} isn't found in the database.");
+
             return new UserResponse(userModel);
         }
 
         public async Task<UserResponseWithPassword> GetByUserName(string userName)
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.UserName == userName);
-            if (userModel == null) throw new Exception($"The user with UserName {userName} isn't found in the database.");
+            if (userModel == null)
+                throw new Exception($"The user with UserName {userName} isn't found in the database.");
+
             return new UserResponseWithPassword(userModel);
         }
 
         public async Task<UserResponse> Update(UserRequest userRequest, int id)
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
-            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+            if (userModel == null)
+                throw new Exception($"The user with Id {id} isn't found in the database.");
 
             userModel.UpdatedAt = DateTime.UtcNow;
             userModel.UserName = userRequest.UserName;
@@ -62,15 +69,19 @@ namespace TrensManager.Repositories
 
             _dbContext.User.Update(userModel);
             await _dbContext.SaveChangesAsync();
+
             return new UserResponse(userModel);
         }
 
         public async Task<bool> Delete(int id)
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
-            if (userModel == null) throw new Exception($"The user with Id {id} isn't found in the database.");
+            if (userModel == null)
+                throw new Exception($"The user with Id {id} isn't found in the database.");
+
             _dbContext.User.Remove(userModel);
             await _dbContext.SaveChangesAsync();
+
             return true;
         }
     }
