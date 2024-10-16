@@ -61,6 +61,13 @@ namespace TrensManager.Repositories
             return new TrainResponse(trainModel);
         }
 
+        public async Task<TrainResponse> GetByOS(int os)
+        {
+            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.NumberOS == os);
+            if (trainModel == null) throw new Exception($"The Train with OS number {os} isn't found in the database.");
+            return new TrainResponse(trainModel);
+        }
+
         public async Task<TrainResponse> Update(TrainRequest trainRequest, int id, string userName)
         {
             TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);

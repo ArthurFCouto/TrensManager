@@ -1,6 +1,4 @@
-﻿using TrensManager.DTO.VehicleDTO;
-
-namespace TrensManager.DTO.TrainDTO
+﻿namespace TrensManager.DTO.TrainDTO
 {
     public class TrainRequest
     {
@@ -8,6 +6,5 @@ namespace TrensManager.DTO.TrainDTO
         public required int NumberOS { get; set; }
         public required string Origin { get; set; }
         public List<string>? VehicleCodes { get; set; }
-        public List<VehicleResponseWithoutTrain>? Vehicles { get; set; }
     }
 }

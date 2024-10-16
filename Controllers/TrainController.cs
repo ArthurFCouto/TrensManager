@@ -38,6 +38,13 @@ namespace TrensManager.Controllers
             return Ok(trainResponse);
         }
 
+        [HttpGet("numberOS/{os}")]
+        public async Task<ActionResult<TrainResponse>> GetByOS([FromRoute] int os)
+        {
+            TrainResponse trainResponse = await _trainRepository.GetByOS(os);
+            return Ok(trainResponse);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<TrainResponse>> Update([FromBody] TrainRequest trainRequest, [FromRoute] int id)
         {

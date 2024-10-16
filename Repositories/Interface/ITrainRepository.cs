@@ -11,6 +11,7 @@ namespace TrensManager.Repositories.Interface
         Task<bool> Delete(int id);
         Task<List<TrainResponse>> GetAll();
         Task<TrainResponse> GetById(int id);
+        Task<TrainResponse> GetByOS(int os);
         Task<TrainResponse> Update(TrainRequest trainRequest, int id, string userName);
     }
 }
