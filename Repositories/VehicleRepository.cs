@@ -17,11 +17,11 @@ namespace TrensManager.Repositories
         {
             List<TrainModel> trainModelList = new List<TrainModel>();
 
-            if (vehicleRequest.TrainsId != null && vehicleRequest.TrainsId.Count > 0)
+            if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
             {
-                foreach (int trainId in vehicleRequest.TrainsId)
+                foreach (int OSNumber in vehicleRequest.TrainOSNumber)
                 {
-                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.Id == trainId);
+                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }
@@ -68,11 +68,11 @@ namespace TrensManager.Repositories
 
             List<TrainModel> trainModelList = new List<TrainModel>();
 
-            if (vehicleRequest.TrainsId != null && vehicleRequest.TrainsId.Count > 0)
+            if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
             {
-                foreach (int trainId in vehicleRequest.TrainsId)
+                foreach (int OSNumber in vehicleRequest.TrainOSNumber)
                 {
-                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.Id == trainId);
+                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }

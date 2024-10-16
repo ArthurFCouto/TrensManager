@@ -15,8 +15,8 @@ namespace TrensManager.Data.Map
             builder.Property((data) => data.CreatedByUser);
             builder.Property((data) => data.Destination).IsRequired().HasMaxLength(255);
             builder.HasKey((data) => data.Id);
-            builder.HasIndex(x => x.NumberOS).IsUnique();
-            builder.Property((data) => data.NumberOS).IsRequired().HasMaxLength(64);
+            builder.HasIndex(x => x.OSNumber).IsUnique();
+            builder.Property((data) => data.OSNumber).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.Origin).IsRequired().HasMaxLength(255);
             builder.Property((data) => data.UpdatedAt);
             builder.Property((data) => data.UpdatedByUser);

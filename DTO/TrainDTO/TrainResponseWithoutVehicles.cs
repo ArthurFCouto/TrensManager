@@ -9,7 +9,7 @@ namespace TrensManager.DTO.TrainDTO
             CreatedByUser = trainModel.CreatedByUser;
             Destination = trainModel.Destination;
             Id = trainModel.Id;
-            NumberOS = trainModel.NumberOS;
+            OSNumber = trainModel.OSNumber;
             Origin = trainModel.Origin;
             UpdatedAt = trainModel.UpdatedAt;
             UpdatedByUser = trainModel.UpdatedByUser;
@@ -18,7 +18,7 @@ namespace TrensManager.DTO.TrainDTO
         public string CreatedByUser { get; set; }
         public string Destination { get; set; }
         public int Id { get; set; }
-        public int NumberOS { get; set; }
+        public int OSNumber { get; set; }
         public string Origin { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string UpdatedByUser { get; set; }

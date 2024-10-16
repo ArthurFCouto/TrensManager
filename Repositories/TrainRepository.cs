@@ -33,7 +33,7 @@ namespace TrensManager.Repositories
                 CreatedAt = DateTime.Now,
                 CreatedByUser = userName,
                 Destination = trainRequest.Destination,
-                NumberOS = trainRequest.NumberOS,
+                OSNumber = trainRequest.OSNumber,
                 Origin = trainRequest.Origin,
                 UpdatedAt = DateTime.Now,
                 UpdatedByUser = userName,
@@ -86,7 +86,7 @@ namespace TrensManager.Repositories
             }
 
             trainModel.Destination = trainRequest.Destination;
-            trainModel.NumberOS = trainRequest.NumberOS;
+            trainModel.OSNumber = trainRequest.OSNumber;
             trainModel.Origin = trainRequest.Origin;
             trainModel.UpdatedAt = DateTime.Now;
             trainModel.UpdatedByUser = userName;
