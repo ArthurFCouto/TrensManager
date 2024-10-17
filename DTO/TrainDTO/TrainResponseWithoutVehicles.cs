@@ -1,4 +1,5 @@
-﻿using TrensManager.Models;
+﻿using TrensManager.DTO.UserDTO;
+using TrensManager.Models;
 
 namespace TrensManager.DTO.TrainDTO
 {
@@ -6,21 +7,23 @@ namespace TrensManager.DTO.TrainDTO
     {
         public TrainResponseWithoutVehicles(TrainModel trainModel) { 
             CreatedAt = trainModel.CreatedAt;
-            CreatedByUser = trainModel.CreatedByUser;
+            CreatedByUserID = trainModel.CreatedByUserID;
             Destination = trainModel.Destination;
             Id = trainModel.Id;
             OSNumber = trainModel.OSNumber;
             Origin = trainModel.Origin;
             UpdatedAt = trainModel.UpdatedAt;
-            UpdatedByUser = trainModel.UpdatedByUser;
+            UpdatedByUserID = trainModel.UpdatedByUserID;
+            User = new UserResponseBase(trainModel.User);
         }
         public DateTime CreatedAt { get; set; }
-        public string CreatedByUser { get; set; }
+        public int CreatedByUserID { get; set; }
         public string Destination { get; set; }
         public int Id { get; set; }
         public int OSNumber { get; set; }
         public string Origin { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public string UpdatedByUser { get; set; }
+        public int UpdatedByUserID { get; set; }
+        public UserResponseBase User { get; set; }
     }
 }

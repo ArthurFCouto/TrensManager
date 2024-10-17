@@ -12,14 +12,16 @@ namespace TrensManager.Data.Map
         public void Configure(EntityTypeBuilder<TrainModel> builder)
         {
             builder.Property((data) => data.CreatedAt);
-            builder.Property((data) => data.CreatedByUser);
+            builder.Property((data) => data.CreatedByUserID);
             builder.Property((data) => data.Destination).IsRequired().HasMaxLength(255);
             builder.HasKey((data) => data.Id);
             builder.HasIndex(x => x.OSNumber).IsUnique();
             builder.Property((data) => data.OSNumber).IsRequired().HasMaxLength(64);
             builder.Property((data) => data.Origin).IsRequired().HasMaxLength(255);
             builder.Property((data) => data.UpdatedAt);
-            builder.Property((data) => data.UpdatedByUser);
+            builder.Property((data) => data.UpdatedByUserID);
+            builder.HasOne((data) => data.User).WithMany((data) => data.Trains).HasForeignKey((data) => data.UserID);
+            builder.Property((data) => data.UserID);
         }
     }
 }

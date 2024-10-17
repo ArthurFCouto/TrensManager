@@ -2,7 +2,7 @@
 
 namespace TrensManager.DTO.UserDTO
 {
-    public class UserResponseWithToken : UserResponse
+    public class UserResponseWithToken : UserResponseBase
     {
         public UserResponseWithToken(UserModel userModel, string token) : base(userModel)
         {

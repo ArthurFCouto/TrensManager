@@ -2,7 +2,7 @@
 
 namespace TrensManager.DTO.UserDTO
 {
-    public class UserResponseWithPassword : UserResponse
+    public class UserResponseWithPassword : UserResponseBase
     {
         public UserResponseWithPassword(UserModel userModel) : base(userModel)
         {

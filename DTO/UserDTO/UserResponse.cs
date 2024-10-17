@@ -1,11 +1,12 @@
-﻿using TrensManager.Enums;
+﻿using TrensManager.DTO.TrainDTO;
+using TrensManager.DTO.VehicleDTO;
 using TrensManager.Models;
 
 namespace TrensManager.DTO.UserDTO
 {
-    public class UserResponse
+    public class UserResponse : UserResponseBase
     {
-        public UserResponse(UserModel userModel)
+        public UserResponse(UserModel userModel) : base(userModel)
         {
             CreatedAt = userModel.CreatedAt;
             Id = userModel.Id;
@@ -13,12 +14,11 @@ namespace TrensManager.DTO.UserDTO
             UserName = userModel.UserName;
             UserPassword = "********";
             Role = userModel.Role;
+            Trains = userModel.Trains?.Select((data) => new TrainResponse(data)).ToList();
+            Vehicles = userModel.Vehicles?.Select((data) => new VehicleResponse(data)).ToList();
+            
         }
-        public DateTime CreatedAt { get; set; }
-        public int Id { get; set; }
-        public UserRoles Role { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public string UserName { get; set; }
-        public string UserPassword { get; set; }
+        public List<TrainResponse> Trains { get; set; }
+        public List<VehicleResponse> Vehicles { get; set; }
     }
 }
