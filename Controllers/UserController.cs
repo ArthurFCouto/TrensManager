@@ -22,9 +22,9 @@ namespace TrensManager.Controllers
         // Anotação que informa que esse método não necessita de token para ser acessado, apesar de estar dentro de uma classe que necessita
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserResponse>> Add([FromBody] UserRequest userRequest)
+        public async Task<ActionResult<UserResponseWithToken>> Add([FromBody] UserRequest userRequest)
         {
-            UserResponse userResponse = await _userRepository.Add(userRequest);
+            UserResponseWithToken userResponse = await _userRepository.Add(userRequest);
             return Ok(userResponse);
         }
 
