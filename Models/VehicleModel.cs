@@ -6,11 +6,13 @@ namespace TrensManager.Models
     {
         public required string Code { get; set; }
         public required DateTime CreatedAt { get; set; }
-        public required string CreatedByUser { get; set; }
+        public required int CreatedByUserID { get; set; }
         public int Id { get; set; }
         public ICollection<TrainModel>? Trains { get; set; }
         public required VehicleType Type { get; set; }
         public required DateTime UpdatedAt { get; set; }
-        public required string UpdatedByUser { get; set; }
+        public required int UpdatedByUserID { get; set; }
+        public required int UserID { get; set; }
+        public required UserModel User { get; set; }
     }
 }

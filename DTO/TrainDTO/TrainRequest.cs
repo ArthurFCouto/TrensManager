@@ -6,10 +6,10 @@ namespace TrensManager.DTO.TrainDTO
     {
         [MaxLength(255)]
         [Required]
-        public string Destination { get; set; }
-        [MaxLength(64)]
+        public required string Destination { get; set; }
+        [Range(10000000, 99999999, ErrorMessage = "The value of the OSNumber fild needs to be between 10,000,000 and 99,999,999.")]
         [Required]
-        public int OSNumber { get; set; }
+        public required int OSNumber { get; set; }
         [MaxLength(255)]
         [Required]
         public required string Origin { get; set; }
