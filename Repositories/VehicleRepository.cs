@@ -13,16 +13,22 @@ namespace TrensManager.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<VehicleResponse> Add(VehicleRequest vehicleRequest, string userName)
+        public async Task<VehicleResponse> Add(VehicleRequest vehicleRequest, int userID)
         {
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
+            if (userModel == null)
+                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+
             VehicleModel vehicleModel = new VehicleModel
             {
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 Code = vehicleRequest.Code,
                 Type = vehicleRequest.Type,
-                CreatedByUser = userName,
-                UpdatedByUser = userName
+                CreatedByUserID = userID,
+                UpdatedByUserID = userID,
+                User = userModel,
+                UserID = userID
             };
 
             if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
@@ -69,16 +75,22 @@ namespace TrensManager.Repositories
             return new VehicleResponse(vehicleModel);
         }
 
-        public async Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id, string userName)
+        public async Task<VehicleResponse> Update(VehicleRequest vehicleRequest, int id, int userID)
         {
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
+            if (userModel == null)
+                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+
             VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).FirstOrDefaultAsync((data) => data.Id == id);
             if (vehicleModel == null)
                 throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
-            vehicleModel.UpdatedByUser = userName;
+            vehicleModel.UpdatedByUserID = userID;
             vehicleModel.Code = vehicleRequest.Code;
             vehicleModel.Type = vehicleRequest.Type;
             vehicleModel.UpdatedAt = DateTime.Now;
+            vehicleModel.User = userModel;
+            vehicleModel.UserID = userID;
 
             if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
             {

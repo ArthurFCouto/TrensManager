@@ -14,17 +14,23 @@ namespace TrensManager.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<TrainResponse> Add(TrainRequest trainRequest, string userName)
+        public async Task<TrainResponse> Add(TrainRequest trainRequest, int userID)
         {
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
+            if (userModel == null)
+                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+
             TrainModel trainModel = new TrainModel
             {
                 CreatedAt = DateTime.Now,
-                CreatedByUser = userName,
+                CreatedByUserID = userID,
                 Destination = trainRequest.Destination,
                 OSNumber = trainRequest.OSNumber,
                 Origin = trainRequest.Origin,
                 UpdatedAt = DateTime.Now,
-                UpdatedByUser = userName,
+                UpdatedByUserID = userID,
+                User = userModel,
+                UserID = userID
             };
 
             if (trainRequest.VehicleCodes != null && trainRequest.VehicleCodes.Count > 0)
@@ -75,8 +81,12 @@ namespace TrensManager.Repositories
             return new TrainResponse(trainModel);
         }
 
-        public async Task<TrainResponse> Update(TrainRequest trainRequest, int id, string userName)
+        public async Task<TrainResponse> Update(TrainRequest trainRequest, int id, int userID)
         {
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
+            if (userModel == null)
+                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+
             TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
             if (trainModel == null)
                 throw new Exception($"The Train with Id {id} isn't found in the database.");
@@ -85,7 +95,9 @@ namespace TrensManager.Repositories
             trainModel.OSNumber = trainRequest.OSNumber;
             trainModel.Origin = trainRequest.Origin;
             trainModel.UpdatedAt = DateTime.Now;
-            trainModel.UpdatedByUser = userName;
+            trainModel.UpdatedByUserID = userID;
+            trainModel.User = userModel;
+            trainModel.UserID = userID;
 
             if (trainRequest.VehicleCodes != null && trainRequest.VehicleCodes.Count > 0)
             {

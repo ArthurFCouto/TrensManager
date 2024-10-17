@@ -10,8 +10,8 @@
         public required string Origin { get; set; }
         public required DateTime UpdatedAt { get; set; }
         public required int UpdatedByUserID { get; set; }
-        public required int UserID { get; set; }
         public required UserModel User { get; set; }
+        public required int UserID { get; set; }
         public ICollection<VehicleModel>? Vehicles { get; set; }
     }
 }

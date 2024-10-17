@@ -7,11 +7,11 @@ namespace TrensManager.Repositories.Interface
 {
     public interface ITrainRepository
     {
-        Task<TrainResponse> Add(TrainRequest trainRequest, string userName);
+        Task<TrainResponse> Add(TrainRequest trainRequest, int userID);
         Task<bool> Delete(int id);
         Task<List<TrainResponse>> GetAll();
         Task<TrainResponse> GetById(int id);
         Task<TrainResponse> GetByOS(int os);
-        Task<TrainResponse> Update(TrainRequest trainRequest, int id, string userName);
+        Task<TrainResponse> Update(TrainRequest trainRequest, int id, int userID);
     }
 }

@@ -12,7 +12,7 @@ namespace TrensManager.Models
         public required VehicleType Type { get; set; }
         public required DateTime UpdatedAt { get; set; }
         public required int UpdatedByUserID { get; set; }
-        public required int UserID { get; set; }
         public required UserModel User { get; set; }
+        public required int UserID { get; set; }
     }
 }
