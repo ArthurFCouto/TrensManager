@@ -25,23 +25,24 @@ namespace TrensManager.Repositories
                 UserName = userRequest.UserName,
                 UserPassword = userRequest.UserPassword,
             };
-            string token = ServiceToken.GenerateToken(userModel);
 
             await _dbContext.User.AddAsync(userModel);
             await _dbContext.SaveChangesAsync();
+
+            string token = ServiceToken.GenerateToken(userModel);
 
             return new UserResponseWithToken(userModel, token);
         }
 
         public async Task<List<UserResponse>> GetAll()
         {
-            List<UserModel> userModelList = await _dbContext.User.ToListAsync();
+            List<UserModel> userModelList = await _dbContext.User.Include((data) => data.Trains).Include((data) => data.Vehicles).ToListAsync();
             return userModelList.Select((userModel) => new UserResponse(userModel)).ToList();
         }
 
         public async Task<UserResponse> GetById(int id)
         {
-            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
+            UserModel userModel = await _dbContext.User.Include((data) => data.Trains).Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
             if (userModel == null)
                 throw new Exception($"The user with Id {id} isn't found in the database.");
 
@@ -50,7 +51,7 @@ namespace TrensManager.Repositories
 
         public async Task<UserResponseWithPassword> GetByUserName(string userName)
         {
-            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.UserName == userName);
+            UserModel userModel = await _dbContext.User.Include((data) => data.Trains).Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.UserName == userName);
             if (userModel == null)
                 throw new Exception($"The user with UserName {userName} isn't found in the database.");
 
@@ -59,7 +60,7 @@ namespace TrensManager.Repositories
 
         public async Task<UserResponse> Update(UserRequest userRequest, int id)
         {
-            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
+            UserModel userModel = await _dbContext.User.Include((data) => data.Trains).Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
             if (userModel == null)
                 throw new Exception($"The user with Id {id} isn't found in the database.");
 

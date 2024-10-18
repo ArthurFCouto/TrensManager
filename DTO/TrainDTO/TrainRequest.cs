@@ -13,6 +13,6 @@ namespace TrensManager.DTO.TrainDTO
         [MaxLength(255)]
         [Required]
         public required string Origin { get; set; }
-        public List<string>? VehicleCodes { get; set; }
+        public List<string>? VehicleCodeList { get; set; }
     }
 }

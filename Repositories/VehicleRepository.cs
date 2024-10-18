@@ -17,7 +17,7 @@ namespace TrensManager.Repositories
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
             if (userModel == null)
-                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+                throw new Exception($"Check your token. Cannot recover information about the user.");
 
             VehicleModel vehicleModel = new VehicleModel
             {
@@ -31,17 +31,15 @@ namespace TrensManager.Repositories
                 UserID = userID
             };
 
-            if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
+            if (vehicleRequest.TrainOSNumberList != null && vehicleRequest.TrainOSNumberList.Count > 0)
             {
                 List<TrainModel> trainModelList = new List<TrainModel>();
-
-                foreach (int OSNumber in vehicleRequest.TrainOSNumber)
+                foreach (int OSNumber in vehicleRequest.TrainOSNumberList)
                 {
                     TrainModel trainModel = await _dbContext.Train.Include((data) => data.User).FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }
-
                 if (trainModelList.Count > 0)
                     vehicleModel.Trains = trainModelList;
             }
@@ -79,9 +77,9 @@ namespace TrensManager.Repositories
         {
             UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == userID);
             if (userModel == null)
-                throw new Exception($"Chack your token! The user with Id {userID} isn't found in the database.");
+                throw new Exception($"Check your token. Cannot recover information about the user.");
 
-            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).FirstOrDefaultAsync((data) => data.Id == id);
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).Include((data) => data.User).FirstOrDefaultAsync((data) => data.Id == id);
             if (vehicleModel == null)
                 throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
@@ -92,17 +90,15 @@ namespace TrensManager.Repositories
             vehicleModel.User = userModel;
             vehicleModel.UserID = userID;
 
-            if (vehicleRequest.TrainOSNumber != null && vehicleRequest.TrainOSNumber.Count > 0)
+            if (vehicleRequest.TrainOSNumberList != null && vehicleRequest.TrainOSNumberList.Count > 0)
             {
                 List<TrainModel> trainModelList = new List<TrainModel>();
-
-                foreach (int OSNumber in vehicleRequest.TrainOSNumber)
+                foreach (int OSNumber in vehicleRequest.TrainOSNumberList)
                 {
                     TrainModel trainModel = await _dbContext.Train.Include((data) => data.User).FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }
-
                 if (trainModelList.Count > 0)
                     vehicleModel.Trains = trainModelList;
             }

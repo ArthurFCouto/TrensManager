@@ -8,7 +8,7 @@ namespace TrensManager.DTO.VehicleDTO
         [MaxLength(64)]
         [Required]
         public required string Code { get; set; }
-        public List<int>? TrainOSNumber { get; set; }
+        public List<int>? TrainOSNumberList { get; set; }
         [Required]
         public required VehicleType Type { get; set; }
     }
