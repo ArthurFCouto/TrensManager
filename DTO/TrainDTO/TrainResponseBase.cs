@@ -1,11 +1,12 @@
 ﻿using TrensManager.DTO.UserDTO;
+using TrensManager.DTO.VehicleDTO;
 using TrensManager.Models;
 
 namespace TrensManager.DTO.TrainDTO
 {
-    public class TrainResponseWithoutVehicles
+    public class TrainResponseBase
     {
-        public TrainResponseWithoutVehicles(TrainModel trainModel) { 
+        public TrainResponseBase(TrainModel trainModel) { 
             CreatedAt = trainModel.CreatedAt;
             CreatedByUserID = trainModel.CreatedByUserID;
             Destination = trainModel.Destination;

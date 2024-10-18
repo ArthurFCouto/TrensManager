@@ -4,9 +4,9 @@ using TrensManager.Models;
 
 namespace TrensManager.DTO.VehicleDTO
 {
-    public class VehicleResponseWithoutTrain
+    public class VehicleResponseBase
     {
-        public VehicleResponseWithoutTrain(VehicleModel vehicleModel)
+        public VehicleResponseBase(VehicleModel vehicleModel)
         {
             Code = vehicleModel.Code;
             CreatedAt = vehicleModel.CreatedAt;

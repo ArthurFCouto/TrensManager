@@ -37,7 +37,7 @@ namespace TrensManager.Repositories
 
                 foreach (int OSNumber in vehicleRequest.TrainOSNumber)
                 {
-                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
+                    TrainModel trainModel = await _dbContext.Train.Include((data) => data.User).FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }
@@ -53,13 +53,13 @@ namespace TrensManager.Repositories
         }
         public async Task<List<VehicleResponse>> GetAll()
         {
-            List<VehicleModel> vehicleModelList = await _dbContext.Vehicle.Include((data) => data.Trains).ToListAsync();
+            List<VehicleModel> vehicleModelList = await _dbContext.Vehicle.Include((data) => data.Trains).Include((data) => data.User).ToListAsync();
             return vehicleModelList.Select((vehicleModel) => new VehicleResponse(vehicleModel)).ToList();
         }
 
         public async Task<VehicleResponse> GetByCode(string code)
         {
-            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).FirstOrDefaultAsync((data) => data.Code == code);
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).Include((data) => data.User).FirstOrDefaultAsync((data) => data.Code == code);
             if (vehicleModel == null)
                 throw new Exception($"The Vehicle with Code {code} isn't found in the database.");
 
@@ -68,7 +68,7 @@ namespace TrensManager.Repositories
 
         public async Task<VehicleResponse> GetById(int id)
         {
-            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).FirstOrDefaultAsync((data) => data.Id == id);
+            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).Include((data) => data.User).FirstOrDefaultAsync((data) => data.Id == id);
             if (vehicleModel == null)
                 throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 
@@ -98,7 +98,7 @@ namespace TrensManager.Repositories
 
                 foreach (int OSNumber in vehicleRequest.TrainOSNumber)
                 {
-                    TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
+                    TrainModel trainModel = await _dbContext.Train.Include((data) => data.User).FirstOrDefaultAsync((data) => data.OSNumber == OSNumber);
                     if (trainModel != null)
                         trainModelList.Add(trainModel);
                 }
@@ -115,7 +115,7 @@ namespace TrensManager.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.Trains).FirstOrDefaultAsync((data) => data.Id == id);
+            VehicleModel vehicleModel = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Id == id);
             if (vehicleModel == null)
                 throw new Exception($"The Vehicle with Id {id} isn't found in the database.");
 

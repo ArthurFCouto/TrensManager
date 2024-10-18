@@ -4,9 +4,9 @@ using TrensManager.Models;
 
 namespace TrensManager.DTO.TrainDTO
 {
-    public class TrainResponse
+    public class TrainResponse : TrainResponseBase
     {
-        public TrainResponse(TrainModel trainModel) { 
+        public TrainResponse(TrainModel trainModel) : base(trainModel) { 
             CreatedAt = trainModel.CreatedAt;
             CreatedByUserID = trainModel.CreatedByUserID;
             Destination = trainModel.Destination;
@@ -15,18 +15,9 @@ namespace TrensManager.DTO.TrainDTO
             Origin = trainModel.Origin;
             UpdatedAt = trainModel.UpdatedAt;
             UpdatedByUserID = trainModel.UpdatedByUserID;
-            Vehicles = trainModel.Vehicles?.Select((vehicle) => new VehicleResponseWithoutTrain(vehicle)).ToList();
+            Vehicles = trainModel.Vehicles?.Select((vehicle) => new VehicleResponseBase(vehicle)).ToList();
             User = new UserResponseBase(trainModel.User);
         }
-        public DateTime CreatedAt { get; set; }
-        public int CreatedByUserID { get; set; }
-        public string Destination { get; set; }
-        public int Id { get; set; }
-        public int OSNumber { get; set; }
-        public string Origin { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public int UpdatedByUserID { get; set; }
-        public List<VehicleResponseWithoutTrain>? Vehicles { get; set; }
-        public UserResponseBase User { get; set; }
+        public List<VehicleResponseBase>? Vehicles { get; set; }
     }
 }

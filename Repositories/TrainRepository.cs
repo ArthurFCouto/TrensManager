@@ -39,7 +39,7 @@ namespace TrensManager.Repositories
 
                 foreach (string code in trainRequest.VehicleCodes)
                 {
-                    VehicleModel vehicleModel = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Code == code);
+                    VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.User).FirstOrDefaultAsync((data) => data.Code == code);
                     if (vehicleModel != null)
                         vehicleModelList.Add(vehicleModel);
                 }
@@ -56,16 +56,14 @@ namespace TrensManager.Repositories
 
         public async Task<List<TrainResponse>> GetAll()
         {
-            List<TrainModel> trainModelList = await _dbContext.Train
-                .Include((data) => data.Vehicles)
-                .ToListAsync();
+            List<TrainModel> trainModelList = await _dbContext.Train.Include((data) => data.Vehicles).Include((data) => data.User).ToListAsync();
 
             return trainModelList.Select((trainModel) => new TrainResponse(trainModel)).ToList();
         }
 
         public async Task<TrainResponse> GetById(int id)
         {
-            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
+            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).Include((data) => data.User).FirstOrDefaultAsync((data) => data.Id == id);
             if (trainModel == null)
                 throw new Exception($"The Train with Id {id} isn't found in the database.");
 
@@ -74,7 +72,7 @@ namespace TrensManager.Repositories
 
         public async Task<TrainResponse> GetByOS(int os)
         {
-            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.OSNumber == os);
+            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).Include((data) => data.User).FirstOrDefaultAsync((data) => data.OSNumber == os);
             if (trainModel == null)
                 throw new Exception($"The Train with OS number {os} isn't found in the database.");
 
@@ -105,7 +103,7 @@ namespace TrensManager.Repositories
 
                 foreach (string code in trainRequest.VehicleCodes)
                 {
-                    VehicleModel vehicleModel = await _dbContext.Vehicle.FirstOrDefaultAsync((data) => data.Code == code);
+                    VehicleModel vehicleModel = await _dbContext.Vehicle.Include((data) => data.User).FirstOrDefaultAsync((data) => data.Code == code);
                     if (vehicleModel != null)
                         vehicleModelList.Add(vehicleModel);
                 }
@@ -122,7 +120,7 @@ namespace TrensManager.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            TrainModel trainModel = await _dbContext.Train.Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
+            TrainModel trainModel = await _dbContext.Train.FirstOrDefaultAsync((data) => data.Id == id);
             if (trainModel == null)
                 throw new Exception($"The Train with Id {id} isn't found in the database.");
 

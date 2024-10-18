@@ -19,8 +19,8 @@ namespace TrensManager.Controllers
         [HttpPost]
         public async Task<ActionResult<TrainResponse>> Add([FromBody] TrainRequest trainRequest)
         {
-            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
-            TrainResponse trainResponse = await _trainRepository.Add(trainRequest, userNameToken);
+            string userID = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "Id")?.Value;
+            TrainResponse trainResponse = await _trainRepository.Add(trainRequest, int.Parse(userID));
             return Ok(trainResponse);
         }
 
@@ -48,8 +48,8 @@ namespace TrensManager.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<TrainResponse>> Update([FromBody] TrainRequest trainRequest, [FromRoute] int id)
         {
-            string userNameToken = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "UserName")?.Value;
-            TrainResponse trainResponse = await _trainRepository.Update(trainRequest, id, userNameToken);
+            string userID = HttpContext.User.Claims.FirstOrDefault((data) => data.Type == "Id")?.Value;
+            TrainResponse trainResponse = await _trainRepository.Update(trainRequest, id, int.Parse(userID));
             return Ok(trainResponse);
         }
 

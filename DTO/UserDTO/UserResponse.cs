@@ -16,7 +16,6 @@ namespace TrensManager.DTO.UserDTO
             Role = userModel.Role;
             Trains = userModel.Trains?.Select((data) => new TrainResponse(data)).ToList();
             Vehicles = userModel.Vehicles?.Select((data) => new VehicleResponse(data)).ToList();
-            
         }
         public List<TrainResponse> Trains { get; set; }
         public List<VehicleResponse> Vehicles { get; set; }

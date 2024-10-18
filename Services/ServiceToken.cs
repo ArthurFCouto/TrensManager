@@ -17,7 +17,7 @@ namespace TrensManager.Services
             {
                 // Informando o que será salvo dentro do Token
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim("Id", user.Id.ToString()),
+                    new Claim("Id", $"{user.Id}"),
                     new Claim("Role", user.Role.ToString()),
                     new Claim("UserName", user.UserName)
                 }),

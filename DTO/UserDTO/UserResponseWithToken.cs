@@ -6,9 +6,11 @@ namespace TrensManager.DTO.UserDTO
     {
         public UserResponseWithToken(UserModel userModel, string token) : base(userModel)
         {
+            CreatedAt = userModel.CreatedAt;
             Id = userModel.Id;
             Role = userModel.Role;
             Token = token;
+            UpdatedAt = userModel.UpdatedAt;
             UserName = userModel.UserName;
             UserPassword = "********";
         }
