@@ -10,6 +10,6 @@ namespace TrensManager.Repositories.Interface
         Task<List<UserResponse>> GetAll();
         Task<UserResponse> GetById(int id);
         Task<UserResponseWithPassword> GetByUserName(string userName);
-        Task<UserResponse> Update(UserRequest userRequest, int id);
+        Task<UserResponseBase> Update(UserRequest userRequest, int id);
     }
 }

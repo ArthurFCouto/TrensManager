@@ -76,12 +76,12 @@ namespace TrensManager.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserResponse>> Update([FromBody] UserRequest userRequest, [FromRoute] int id)
+        public async Task<ActionResult<UserResponseBase>> Update([FromBody] UserRequest userRequest, [FromRoute] int id)
         {
             try
             {
-                UserResponse userResponse = await _userRepository.Update(userRequest, id);
-                return Ok(userResponse);
+                UserResponseBase userResponseBase = await _userRepository.Update(userRequest, id);
+                return Ok(userResponseBase);
             }
             catch (Exception ex)
             {

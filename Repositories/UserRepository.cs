@@ -58,9 +58,9 @@ namespace TrensManager.Repositories
             return new UserResponseWithPassword(userModel);
         }
 
-        public async Task<UserResponse> Update(UserRequest userRequest, int id)
+        public async Task<UserResponseBase> Update(UserRequest userRequest, int id)
         {
-            UserModel userModel = await _dbContext.User.Include((data) => data.Trains).Include((data) => data.Vehicles).FirstOrDefaultAsync((data) => data.Id == id);
+            UserModel userModel = await _dbContext.User.FirstOrDefaultAsync((data) => data.Id == id);
             if (userModel == null)
                 throw new Exception($"The user with Id {id} isn't found in the database.");
 
@@ -71,7 +71,7 @@ namespace TrensManager.Repositories
             _dbContext.User.Update(userModel);
             await _dbContext.SaveChangesAsync();
 
-            return new UserResponse(userModel);
+            return new UserResponseBase(userModel);
         }
 
         public async Task<bool> Delete(int id)

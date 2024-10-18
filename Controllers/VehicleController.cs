@@ -16,7 +16,7 @@ namespace TrensManager.Controllers
             _vehicleRepository = vehicleRepository;
         }
 
-        //[Authorize("Admin")]
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<ActionResult<VehicleResponse>> Add([FromBody] VehicleRequest vehicleRequest)
         {
