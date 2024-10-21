@@ -1,12 +1,13 @@
 # Gerenciamento de Trens
 # Dotnet C#
 
-
 ## :computer: O Projeto
 
 Desenvolver uma API com Dotnet e C#, em que seja possível realizar um CRUD de Trens e de Veículos.
 
 Cada Trem pode ter ou não um ou vários Veículos, e um Veículo pode ter ou não um ou vários Trens.
+
+Tanto Veiculo quanto Trem deve estar associado a um usuário.
 
 Foi utilizador um banco de dados local SQL Server para armazenamento de dados e testes.
 
@@ -20,7 +21,7 @@ Nesta primeira versão, estão disponíveis as seguintes funcionalidades:
 
 - :white_check_mark: **CRUD Usuários**: Adicionar, atualizar, listar e remover Veículos.
 
-- :white_check_mark: **Authorization / Authentication**: Uso de token para acesso a API e controle de funções baseado no tipo do usuário (admin/default).
+- :white_check_mark: **Authorization / Authentication**: Uso de token para acesso a API e controle de funções baseado no tipo do usuário (admin/user).
 
 ### :bookmark_tabs: Conceitos abordados
 
@@ -28,15 +29,13 @@ Nesta primeira versão, estão disponíveis as seguintes funcionalidades:
 
 - Utilização do `Swagger` para documentar a API.
 
-- Relacionamentos entre tabelas no banco de dados.
+- Relacionamentos um para um e muitos para muitos.
 
-- Abordagem da construção de APIs utilizando Controllers.
+- Abordagem da construção de APIs utilizando Controllers e DTOs.
 
-- Utilização do JWT para geração de tokens e recuperação de informações.
+- Utilização do JWT.
 
-- Abordagem da construção de APIs utilizando Controllers.
-
-- Controle de acesso a API através de autorização e autenticação.
+- Autorização e autenticação.
 
 ### :label: Notas
 

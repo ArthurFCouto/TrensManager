@@ -6,8 +6,8 @@
         public required int CreatedByUserID { get; set; }
         public required string Destination { get; set; }
         public int Id { get; set; }
-        public required int OSNumber { get; set; }
         public required string Origin { get; set; }
+        public required int OSNumber { get; set; }
         public required DateTime UpdatedAt { get; set; }
         public required int UpdatedByUserID { get; set; }
         public virtual UserModel User { get; set; }

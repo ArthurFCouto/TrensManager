@@ -1,5 +1,4 @@
 ﻿using TrensManager.DTO.UserDTO;
-using TrensManager.Models;
 
 namespace TrensManager.Repositories.Interface
 {

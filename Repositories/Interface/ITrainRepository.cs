@@ -1,7 +1,6 @@
 ﻿// Task é o indicativo que o método é assíncrono.
 
 using TrensManager.DTO.TrainDTO;
-using TrensManager.Models;
 
 namespace TrensManager.Repositories.Interface
 {

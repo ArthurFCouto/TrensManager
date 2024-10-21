@@ -19,6 +19,7 @@ namespace TrensManager
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen((data) =>
             {
                 data.SwaggerDoc("v1", new OpenApiInfo { Title = "TrainsManager", Version = "v1" });
@@ -39,12 +40,13 @@ namespace TrensManager
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
-                            },
+                            }
                         },
                         new List<string>()
                     }
                 });
             });
+
             builder.Services.AddAuthentication((data) =>
             {
                 data.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,11 +64,13 @@ namespace TrensManager
                         ValidateAudience = false
                     };
                 });
+
             builder.Services.AddAuthorization((options) =>
             {
                 options.AddPolicy("User", policy => policy.RequireClaim("Role", UserRoles.User.ToString()));
                 options.AddPolicy("Admin", policy => policy.RequireClaim("Role", UserRoles.Admin.ToString()));
             });
+
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<TrainSystemDBContext>(
                     (options) => options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))

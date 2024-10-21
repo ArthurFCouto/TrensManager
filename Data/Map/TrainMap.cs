@@ -1,5 +1,5 @@
 ﻿// Nesta classe é feito o mapeamento das tabelas do banco de dados
-// É nesta classe que são feitas configurações adicionais como definição de primaryKey, campo obrigatório ou não...
+// É nesta classe que são feitas configurações adicionais como definição de primaryKey, campo obrigatório ou não, etc.
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,6 +20,8 @@ namespace TrensManager.Data.Map
             builder.Property((data) => data.Origin).IsRequired().HasMaxLength(255);
             builder.Property((data) => data.UpdatedAt);
             builder.Property((data) => data.UpdatedByUserID);
+            // O código abaixo é utilizado para relacionamento 1:N
+            // Com o código abaixo o EntityFramework cria automaticamente a tabela de junção
             builder.HasOne((data) => data.User).WithMany((data) => data.Trains).HasForeignKey((data) => data.UserID);
             builder.Property((data) => data.UserID);
         }
